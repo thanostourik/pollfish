@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.tnt.logging.client;
+package com.tnt.logging.shared;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,18 +12,23 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
+import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.EncodingUtils;
 import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.server.AbstractNonblockingServer.*;
-
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +36,13 @@ public class LoggingService {
 
   public interface Iface {
 
-    public void log(int v, String time, String m) throws org.apache.thrift.TException;
+    public void log(Event event) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void log(int v, String time, String m, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void log(Event event, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -61,18 +66,16 @@ public class LoggingService {
       super(iprot, oprot);
     }
 
-    public void log(int v, String time, String m) throws org.apache.thrift.TException
+    public void log(Event event) throws org.apache.thrift.TException
     {
-      send_log(v, time, m);
+      send_log(event);
       recv_log();
     }
 
-    public void send_log(int v, String time, String m) throws org.apache.thrift.TException
+    public void send_log(Event event) throws org.apache.thrift.TException
     {
       log_args args = new log_args();
-      args.setV(v);
-      args.setTime(time);
-      args.setM(m);
+      args.setEvent(event);
       sendBase("log", args);
     }
 
@@ -101,30 +104,24 @@ public class LoggingService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void log(int v, String time, String m, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void log(Event event, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      log_call method_call = new log_call(v, time, m, resultHandler, this, ___protocolFactory, ___transport);
+      log_call method_call = new log_call(event, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class log_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private int v;
-      private String time;
-      private String m;
-      public log_call(int v, String time, String m, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private Event event;
+      public log_call(Event event, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.v = v;
-        this.time = time;
-        this.m = m;
+        this.event = event;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("log", org.apache.thrift.protocol.TMessageType.CALL, 0));
         log_args args = new log_args();
-        args.setV(v);
-        args.setTime(time);
-        args.setM(m);
+        args.setEvent(event);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -171,7 +168,7 @@ public class LoggingService {
 
       public log_result getResult(I iface, log_args args) throws org.apache.thrift.TException {
         log_result result = new log_result();
-        iface.log(args.v, args.time, args.m);
+        iface.log(args.event);
         return result;
       }
     }
@@ -239,7 +236,7 @@ public class LoggingService {
       }
 
       public void start(I iface, log_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
-        iface.log(args.v, args.time, args.m,resultHandler);
+        iface.log(args.event,resultHandler);
       }
     }
 
@@ -248,9 +245,7 @@ public class LoggingService {
   public static class log_args implements org.apache.thrift.TBase<log_args, log_args._Fields>, java.io.Serializable, Cloneable, Comparable<log_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("log_args");
 
-    private static final org.apache.thrift.protocol.TField V_FIELD_DESC = new org.apache.thrift.protocol.TField("v", org.apache.thrift.protocol.TType.I32, (short)1);
-    private static final org.apache.thrift.protocol.TField TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("time", org.apache.thrift.protocol.TType.STRING, (short)2);
-    private static final org.apache.thrift.protocol.TField M_FIELD_DESC = new org.apache.thrift.protocol.TField("m", org.apache.thrift.protocol.TType.STRING, (short)3);
+    private static final org.apache.thrift.protocol.TField EVENT_FIELD_DESC = new org.apache.thrift.protocol.TField("event", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -258,15 +253,11 @@ public class LoggingService {
       schemes.put(TupleScheme.class, new log_argsTupleSchemeFactory());
     }
 
-    public int v; // required
-    public String time; // required
-    public String m; // required
+    public Event event; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      V((short)1, "v"),
-      TIME((short)2, "time"),
-      M((short)3, "m");
+      EVENT((short)1, "event");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -281,12 +272,8 @@ public class LoggingService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // V
-            return V;
-          case 2: // TIME
-            return TIME;
-          case 3: // M
-            return M;
+          case 1: // EVENT
+            return EVENT;
           default:
             return null;
         }
@@ -327,17 +314,11 @@ public class LoggingService {
     }
 
     // isset id assignments
-    private static final int __V_ISSET_ID = 0;
-    private byte __isset_bitfield = 0;
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.V, new org.apache.thrift.meta_data.FieldMetaData("v", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32          , "int")));
-      tmpMap.put(_Fields.TIME, new org.apache.thrift.meta_data.FieldMetaData("time", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      tmpMap.put(_Fields.M, new org.apache.thrift.meta_data.FieldMetaData("m", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.EVENT, new org.apache.thrift.meta_data.FieldMetaData("event", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Event.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(log_args.class, metaDataMap);
     }
@@ -346,28 +327,18 @@ public class LoggingService {
     }
 
     public log_args(
-      int v,
-      String time,
-      String m)
+      Event event)
     {
       this();
-      this.v = v;
-      setVIsSet(true);
-      this.time = time;
-      this.m = m;
+      this.event = event;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public log_args(log_args other) {
-      __isset_bitfield = other.__isset_bitfield;
-      this.v = other.v;
-      if (other.isSetTime()) {
-        this.time = other.time;
-      }
-      if (other.isSetM()) {
-        this.m = other.m;
+      if (other.isSetEvent()) {
+        this.event = new Event(other.event);
       }
     }
 
@@ -377,106 +348,40 @@ public class LoggingService {
 
     @Override
     public void clear() {
-      setVIsSet(false);
-      this.v = 0;
-      this.time = null;
-      this.m = null;
+      this.event = null;
     }
 
-    public int getV() {
-      return this.v;
+    public Event getEvent() {
+      return this.event;
     }
 
-    public log_args setV(int v) {
-      this.v = v;
-      setVIsSet(true);
+    public log_args setEvent(Event event) {
+      this.event = event;
       return this;
     }
 
-    public void unsetV() {
-      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __V_ISSET_ID);
+    public void unsetEvent() {
+      this.event = null;
     }
 
-    /** Returns true if field v is set (has been assigned a value) and false otherwise */
-    public boolean isSetV() {
-      return EncodingUtils.testBit(__isset_bitfield, __V_ISSET_ID);
+    /** Returns true if field event is set (has been assigned a value) and false otherwise */
+    public boolean isSetEvent() {
+      return this.event != null;
     }
 
-    public void setVIsSet(boolean value) {
-      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __V_ISSET_ID, value);
-    }
-
-    public String getTime() {
-      return this.time;
-    }
-
-    public log_args setTime(String time) {
-      this.time = time;
-      return this;
-    }
-
-    public void unsetTime() {
-      this.time = null;
-    }
-
-    /** Returns true if field time is set (has been assigned a value) and false otherwise */
-    public boolean isSetTime() {
-      return this.time != null;
-    }
-
-    public void setTimeIsSet(boolean value) {
+    public void setEventIsSet(boolean value) {
       if (!value) {
-        this.time = null;
-      }
-    }
-
-    public String getM() {
-      return this.m;
-    }
-
-    public log_args setM(String m) {
-      this.m = m;
-      return this;
-    }
-
-    public void unsetM() {
-      this.m = null;
-    }
-
-    /** Returns true if field m is set (has been assigned a value) and false otherwise */
-    public boolean isSetM() {
-      return this.m != null;
-    }
-
-    public void setMIsSet(boolean value) {
-      if (!value) {
-        this.m = null;
+        this.event = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case V:
+      case EVENT:
         if (value == null) {
-          unsetV();
+          unsetEvent();
         } else {
-          setV((Integer)value);
-        }
-        break;
-
-      case TIME:
-        if (value == null) {
-          unsetTime();
-        } else {
-          setTime((String)value);
-        }
-        break;
-
-      case M:
-        if (value == null) {
-          unsetM();
-        } else {
-          setM((String)value);
+          setEvent((Event)value);
         }
         break;
 
@@ -485,14 +390,8 @@ public class LoggingService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case V:
-        return Integer.valueOf(getV());
-
-      case TIME:
-        return getTime();
-
-      case M:
-        return getM();
+      case EVENT:
+        return getEvent();
 
       }
       throw new IllegalStateException();
@@ -505,12 +404,8 @@ public class LoggingService {
       }
 
       switch (field) {
-      case V:
-        return isSetV();
-      case TIME:
-        return isSetTime();
-      case M:
-        return isSetM();
+      case EVENT:
+        return isSetEvent();
       }
       throw new IllegalStateException();
     }
@@ -528,30 +423,12 @@ public class LoggingService {
       if (that == null)
         return false;
 
-      boolean this_present_v = true;
-      boolean that_present_v = true;
-      if (this_present_v || that_present_v) {
-        if (!(this_present_v && that_present_v))
+      boolean this_present_event = true && this.isSetEvent();
+      boolean that_present_event = true && that.isSetEvent();
+      if (this_present_event || that_present_event) {
+        if (!(this_present_event && that_present_event))
           return false;
-        if (this.v != that.v)
-          return false;
-      }
-
-      boolean this_present_time = true && this.isSetTime();
-      boolean that_present_time = true && that.isSetTime();
-      if (this_present_time || that_present_time) {
-        if (!(this_present_time && that_present_time))
-          return false;
-        if (!this.time.equals(that.time))
-          return false;
-      }
-
-      boolean this_present_m = true && this.isSetM();
-      boolean that_present_m = true && that.isSetM();
-      if (this_present_m || that_present_m) {
-        if (!(this_present_m && that_present_m))
-          return false;
-        if (!this.m.equals(that.m))
+        if (!this.event.equals(that.event))
           return false;
       }
 
@@ -571,32 +448,12 @@ public class LoggingService {
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetV()).compareTo(other.isSetV());
+      lastComparison = Boolean.valueOf(isSetEvent()).compareTo(other.isSetEvent());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetV()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.v, other.v);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetTime()).compareTo(other.isSetTime());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetTime()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.time, other.time);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetM()).compareTo(other.isSetM());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetM()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.m, other.m);
+      if (isSetEvent()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.event, other.event);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -621,23 +478,11 @@ public class LoggingService {
       StringBuilder sb = new StringBuilder("log_args(");
       boolean first = true;
 
-      sb.append("v:");
-      sb.append(this.v);
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("time:");
-      if (this.time == null) {
+      sb.append("event:");
+      if (this.event == null) {
         sb.append("null");
       } else {
-        sb.append(this.time);
-      }
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("m:");
-      if (this.m == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.m);
+        sb.append(this.event);
       }
       first = false;
       sb.append(")");
@@ -647,6 +492,9 @@ public class LoggingService {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
+      if (event != null) {
+        event.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -659,8 +507,6 @@ public class LoggingService {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bitfield = 0;
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -685,26 +531,11 @@ public class LoggingService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // V
-              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-                struct.v = iprot.readI32();
-                struct.setVIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            case 2: // TIME
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.time = iprot.readString();
-                struct.setTimeIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            case 3: // M
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.m = iprot.readString();
-                struct.setMIsSet(true);
+            case 1: // EVENT
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.event = new Event();
+                struct.event.read(iprot);
+                struct.setEventIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -724,17 +555,9 @@ public class LoggingService {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(V_FIELD_DESC);
-        oprot.writeI32(struct.v);
-        oprot.writeFieldEnd();
-        if (struct.time != null) {
-          oprot.writeFieldBegin(TIME_FIELD_DESC);
-          oprot.writeString(struct.time);
-          oprot.writeFieldEnd();
-        }
-        if (struct.m != null) {
-          oprot.writeFieldBegin(M_FIELD_DESC);
-          oprot.writeString(struct.m);
+        if (struct.event != null) {
+          oprot.writeFieldBegin(EVENT_FIELD_DESC);
+          struct.event.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -755,42 +578,23 @@ public class LoggingService {
       public void write(org.apache.thrift.protocol.TProtocol prot, log_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetV()) {
+        if (struct.isSetEvent()) {
           optionals.set(0);
         }
-        if (struct.isSetTime()) {
-          optionals.set(1);
-        }
-        if (struct.isSetM()) {
-          optionals.set(2);
-        }
-        oprot.writeBitSet(optionals, 3);
-        if (struct.isSetV()) {
-          oprot.writeI32(struct.v);
-        }
-        if (struct.isSetTime()) {
-          oprot.writeString(struct.time);
-        }
-        if (struct.isSetM()) {
-          oprot.writeString(struct.m);
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetEvent()) {
+          struct.event.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, log_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(3);
+        BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.v = iprot.readI32();
-          struct.setVIsSet(true);
-        }
-        if (incoming.get(1)) {
-          struct.time = iprot.readString();
-          struct.setTimeIsSet(true);
-        }
-        if (incoming.get(2)) {
-          struct.m = iprot.readString();
-          struct.setMIsSet(true);
+          struct.event = new Event();
+          struct.event.read(iprot);
+          struct.setEventIsSet(true);
         }
       }
     }

@@ -1,10 +1,26 @@
 package com.tnt.logging.server;
 
+import com.tnt.logging.shared.Event;
+import com.tnt.logging.shared.LoggingService;
 import org.apache.thrift.TException;
+import org.springframework.kafka.core.KafkaTemplate;
 
 public class LoggingHandler implements LoggingService.Iface {
 
-	public void log(int v, String time, String m) throws TException {
-		System.out.println("log(" + v + "," + time + "," + m + ")");
+	private KafkaTemplate<String, Event> kafkaTemplate;
+
+	/**
+	 *
+	 * @param kafkaTemplate
+	 */
+	public LoggingHandler(KafkaTemplate<String, Event> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
+
+	@Override
+	public void log(Event event) throws TException {
+		System.out.println("LoggingServer received event: " + event.getM());
+
+		kafkaTemplate.send("logging", event);
 	}
 }

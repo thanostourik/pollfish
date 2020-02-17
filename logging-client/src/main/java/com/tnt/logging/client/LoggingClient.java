@@ -1,10 +1,17 @@
 package com.tnt.logging.client;
 
+import com.tnt.logging.shared.Event;
+import com.tnt.logging.shared.LogEvent;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import com.tnt.logging.shared.LoggingService;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LoggingClient {
 
@@ -28,6 +35,14 @@ public class LoggingClient {
 
 	private static void perform(LoggingService.Client client) throws TException {
 		System.out.println("Call log method");
-		client.log(1,"2020-02-11", "This is a log event");
+
+		Event event = new Event(
+				1,
+				ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ISO_DATE_TIME),
+				LogEvent.LOG_EVENT_2,
+				"This is just a log comment."
+		);
+
+		client.log(event);
 	}
 }

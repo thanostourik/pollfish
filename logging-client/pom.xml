@@ -6,9 +6,14 @@
 
     <groupId>com.tnt</groupId>
     <artifactId>logging-client</artifactId>
-    <version>client-1.0</version>
+    <version>1.0</version>
 
     <dependencies>
+        <dependency>
+            <groupId>com.tnt</groupId>
+            <artifactId>logging-shared</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>

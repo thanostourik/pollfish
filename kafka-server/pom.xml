@@ -12,13 +12,17 @@
     </parent>
 
     <groupId>com.tnt</groupId>
-    <artifactId>logging-server</artifactId>
+    <artifactId>kafka-consumer</artifactId>
     <version>1.0</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-data-cassandra</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.kafka</groupId>
@@ -33,11 +37,13 @@
             <groupId>com.tnt</groupId>
             <artifactId>logging-shared</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
             <version>0.9.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

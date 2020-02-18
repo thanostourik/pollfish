@@ -39,7 +39,7 @@ public class LoggingClient {
 		Event event = new Event(
 				1,
 				ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ISO_DATE_TIME),
-				LogEvent.LOG_EVENT_2,
+				LogEvent.LOG_EVENT_3,
 				"This is just a log comment."
 		);
 

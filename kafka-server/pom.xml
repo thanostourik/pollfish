@@ -34,6 +34,11 @@
             <version>2.10.2</version>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>com.tnt</groupId>
             <artifactId>logging-shared</artifactId>
             <version>1.0</version>

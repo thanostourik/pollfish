@@ -1,1 +1,1 @@
-java -jar ../logging-client/target/logging-client-1.0-jar-with-dependencies.jar
+java -jar ../logging-thrift-client/target/logging-thrift-client-1.0-jar-with-dependencies.jar

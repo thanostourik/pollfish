@@ -17,21 +17,21 @@ bin/kafka-server-start.sh config/server.properties
 Thrift has already been run and the code has been generated in logging-shared.
 If you want to manually generate thrift client and server again you can run the following.
 ```bash
-thrift -gen java -out logging-shared/src/main/java logging.thrift
+thrift -gen java -out logging-thrift-shared/src/main/java logging.thrift
 ```
 
 ## First steps / Preparations
 #### LoggingServer config
-If you don't use default settings setup kafka host and port in file: `logging-server/src/main/resources/application.properties`
+If you don't use default settings setup kafka host and port in file: `logging-thrift-server/src/main/resources/application.properties`
 ```properties
 kafka.bootstrapAddress=localhost:9092
 ```
 #### KafkaConsumer config
-If you don't use default settings setup kafka host and port in file: `logging-server/src/main/resources/application.properties`
+If you don't use default settings setup kafka host and port in file: `logging-thrift-server/src/main/resources/application.properties`
 ```properties
 kafka.bootstrapAddress=localhost:9092
 ```
-Setup cassandra settings in file: `logging-server/src/main/resources/application.properties`
+Setup cassandra settings in file: `logging-thrift-server/src/main/resources/application.properties`
 ```properties
 spring.data.cassandra.contact-points=127.0.0.1
 spring.data.cassandra.port=9042
@@ -65,13 +65,13 @@ release/run-client.sh
 ```
 #### Package applications into jars
 ```bash
-./mvnw -f logging-client/pom.xml package
-./mvnw -f logging-server/pom.xml package
-./mvnw -f kafka-server/pom.xml package
+./mvnw -f logging-thrift-client/pom.xml package
+./mvnw -f logging-thrift-server/pom.xml package
+./mvnw -f logging-kafka-consumer/pom.xml package
 ```
 #### Run servers
 ```bash
-java -jar logging-server/target/logging-server-1.0.jar
-java -jar kafka-server/target/kafka-consumer-1.0.jar
-java -jar logging-client/target/logging-client-1.0-jar-with-dependencies.jar
+java -jar logging-thrift-server/target/logging-thrift-server-1.0.jar
+java -jar logging-kafka-consumer/target/logging-kafka-consumer-1.0.jar
+java -jar logging-thrift-client/target/logging-thrift-client-1.0-jar-with-dependencies.jar
 ```

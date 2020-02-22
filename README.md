@@ -52,10 +52,11 @@ release/initialize-database.sh -u <user> -p <password>
 ## Build & Run
 Every time you run the client it will send a randomly generated LogEvent
 ```bash
-chmod +x release/*.sh
-release/build.sh
-release/run-servers.sh
-release/run-client.sh
+cd release
+chmod +x *.sh
+./build.sh
+./run-servers.sh
+./run-client.sh
 ```
 
 ## Build & Run manually

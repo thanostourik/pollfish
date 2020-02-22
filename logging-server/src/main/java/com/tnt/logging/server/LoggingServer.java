@@ -41,7 +41,7 @@ public class LoggingServer {
 			TServerTransport serverTransport = new TServerSocket(9090);
 			TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
 
-			System.out.println("Logging server is listening...");
+			System.out.println("LoggingServer is listening...");
 			server.serve();
 		} catch (Exception e) {
 			e.printStackTrace();

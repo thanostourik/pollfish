@@ -41,6 +41,6 @@ public class LoggingListener {
 		event.setComment(cr.value().getComment());
 		eventRepository.save(event);
 
-		System.out.println("Received message -> time: " + cr.value().getTime() + ", event: " + cr.value().getM());
+		System.out.println("KafkaConsumer: Received event: " + cr.value());
 	}
 }

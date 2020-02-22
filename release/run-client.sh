@@ -1,0 +1,1 @@
+java -jar ../logging-client/target/logging-client-1.0-jar-with-dependencies.jar

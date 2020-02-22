@@ -12,6 +12,7 @@ import com.tnt.logging.shared.LoggingService;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 public class LoggingClient {
 
@@ -34,15 +35,17 @@ public class LoggingClient {
 	}
 
 	private static void perform(LoggingService.Client client) throws TException {
-		System.out.println("Call log method");
+		Random random = new Random();
+		Integer eventIndex = random.nextInt(LogEvent.values().length) + 1;
 
 		Event event = new Event(
 				1,
 				ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ISO_DATE_TIME),
-				LogEvent.LOG_EVENT_3,
+				LogEvent.findByValue(eventIndex),
 				"This is just a log comment."
 		);
 
+		System.out.println("LoggingClient: Sending event: " + event);
 		client.log(event);
 	}
 }

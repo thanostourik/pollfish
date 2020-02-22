@@ -19,7 +19,7 @@ public class LoggingHandler implements LoggingService.Iface {
 
 	@Override
 	public void log(Event event) throws TException {
-		System.out.println("LoggingServer received event: " + event.getM());
+		System.out.println("LoggingServer: Received event and pushing to kafka: " + event);
 
 		kafkaTemplate.send("logging", event);
 	}
